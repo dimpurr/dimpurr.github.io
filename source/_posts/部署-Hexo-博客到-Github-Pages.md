@@ -4,13 +4,15 @@ date: 2020-04-11 03:30:48
 tags:
 ---
 
-Hexo 官方的文档地址：https://hexo.io/docs/github-pages.html 这个文档有一堆问题，评论区有说。
+Hexo 官方的文档地址：https://hexo.io/docs/github-pages.html 这个文档有一堆问题，评论区有提到。
 
 建议使用 Travis CI 来部署。
 
 ### 创建 Repo 和安装 Hexo
 
-首先创建一个自己用户名的 repo `dimpurr.github.io` ，随意要不要 Initialize ，然后把 Hexo 的文件丢进去。 ~~`.gitignore` 可以选 Node 的，记得从里面去掉 `public` 一行的注释。~~ Hexo 自带 `.gitignore` 所以不用选。
+首先创建一个自己用户名的 repo `dimpurr.github.io` 。
+
+随意要不要 Initialize ，然后把 Hexo 的文件丢进去。 ~~`.gitignore` 可以选 Node 的，记得从里面去掉 `public` 一行的注释。~~ Hexo 自带 `.gitignore` 所以不用选。
 
 如果和我一样还没有安装 Hexo 的话， clone repo 然后去新建 hexo 分支：
 
@@ -25,7 +27,9 @@ mv ./tmp/* .
 rm -rf tmp # rmdir tmp on windows
 ```
 
-然后编辑 `_config.yml` 做一些基本设置。我觉得有必要改的：
+然后编辑 `_config.yml` 做一些基本设置。
+
+我觉得有必要改的：
 
 ```yml
 language: zh
@@ -36,9 +40,13 @@ timezone: 'Shanghai'
 
 ### 配置 Travis Ci
 
-然后在 Github 账户上添加 Travis CI ： https://github.com/marketplace/travis-ci 选开源 Free 就好。我选了 `Only select repositories` ，然后添加这个项目。
+在 Github 账户上添加 Travis CI ： https://github.com/marketplace/travis-ci
 
-创建新的 Github Token ：https://github.com/settings/tokens/new 理论上只需要 **repo** 部分权限。存好这个 Token ，关掉网页就再也看不到了。
+选开源 Free 就好。我选了 `Only select repositories` ，然后添加这个项目。
+
+创建新的 Github Token ：https://github.com/settings/tokens/new
+
+理论上只需要 **repo** 部分权限。存好这个 Token ，关掉网页就再也看不到了。
 
 在 Travis CI 控制面板编辑对应 repo 的环境变量，例如 https://travis-ci.com/github/dimpurr/dimpurr.github.io/settings ，把刚才的 Token 存进 `GH_TOKEN` 变量。
 
@@ -120,3 +128,14 @@ feed:
   autodiscovery: true
   template:
 ```
+
+### 本地测试和预览
+
+因为 Travis CI 慢死了，以及编辑文章想要看主题效果的时候还是本地预览方便，可以在 `public` 目录下用 Python 跑一个迷你服务器：
+
+```bash
+python2 -m SimpleHTTPServer
+python3 -m http.server
+```
+
+然后访问 http://127.0.0.1:8000/ 就好了。
