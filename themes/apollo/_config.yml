@@ -1,9 +1,14 @@
 menu:
-    Blog: /
+    NOTED DIM'ENSIONS: /
     Archive: /archives/
-    Dimpurr's Blog: http://weibo.com/sunchongsheng
-    DIM'ENSIN Blog: https://github.com/pinggod
     Rss: /atom.xml
+
+menu2:
+    Blog: http://blog.dimpurr.com/
+    Blog.moe: https://blog.dim.moe/
+    Book: http://book.dimpurr.com/
+    Book.moe: http://book.dim.moe/
+    Knowledge Base: http://note.dimpurr.com/
 
 favicon: /favicon.png
 logo: /favicon.png

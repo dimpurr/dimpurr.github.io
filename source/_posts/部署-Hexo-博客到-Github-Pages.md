@@ -8,6 +8,8 @@ Hexo 官方的文档地址：https://hexo.io/docs/github-pages.html 这个文档
 
 建议使用 Travis CI 来部署。
 
+### 创建 Repo 和安装 Hexo
+
 首先创建一个自己用户名的 repo `dimpurr.github.io` ，随意要不要 Initialize ，然后把 Hexo 的文件丢进去。 ~~`.gitignore` 可以选 Node 的，记得从里面去掉 `public` 一行的注释。~~ Hexo 自带 `.gitignore` 所以不用选。
 
 如果和我一样还没有安装 Hexo 的话， clone repo 然后去新建 hexo 分支：
@@ -31,6 +33,8 @@ timezone: 'Shanghai'
 ```
 
 记得 push 。
+
+### 配置 Travis Ci
 
 然后在 Github 账户上添加 Travis CI ： https://github.com/marketplace/travis-ci 选开源 Free 就好。我选了 `Only select repositories` ，然后添加这个项目。
 
