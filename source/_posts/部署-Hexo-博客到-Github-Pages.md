@@ -25,7 +25,7 @@ rm -rf tmp # rmdir tmp on windows
 
 ```yml
 language: zh
-timezone: 'Shanghai'
+timezone: 'Asia/Shanghai'
 ```
 
 记得 push 。
@@ -60,6 +60,8 @@ deploy:
     branch: hexo
   local-dir: public
 ```
+
+没事可以去 Travis CI 上看一眼 build 进度，地址类似 https://travis-ci.com/github/dimpurr/dimpurr.github.io
 
 此时就已经可以访问了。该换主题换主题，该加插件加插件，然后开始写文章吧！
 
