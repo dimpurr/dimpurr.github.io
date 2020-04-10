@@ -1,8 +1,8 @@
 menu:
     Blog: /
     Archive: /archives/
-    Weibo: http://weibo.com/sunchongsheng
-    GitHub: https://github.com/pinggod
+    Dimpurr's Blog: http://weibo.com/sunchongsheng
+    DIM'ENSIN Blog: https://github.com/pinggod
     Rss: /atom.xml
 
 favicon: /favicon.png
@@ -18,4 +18,4 @@ duoshuo:
 # ga: UA-xxxxxxxx-x
 
 # Copyright Infomation
-startyear: 2015
+startyear: 2020

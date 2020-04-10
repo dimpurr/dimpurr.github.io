@@ -12,6 +12,8 @@ Hexo 官方的文档地址：https://hexo.io/docs/github-pages.html 这个文档
 
 如果和我一样还没有安装 Hexo 的话， clone repo 然后去新建 hexo 分支：
 
+<!-- more -->
+
 ```bash
 yarn global add hexo # npm install -g hexo-cli
 cd dimpurr.github.io
