@@ -25,7 +25,7 @@ rm -rf tmp # rmdir tmp on windows
 
 ```yml
 language: zh
-timezone: 'Asia/Shanghai'
+timezone: 'Shanghai'
 ```
 
 记得 push 。
@@ -61,11 +61,38 @@ deploy:
   local-dir: public
 ```
 
-没事可以去 Travis CI 上看一眼 build 进度，地址类似 https://travis-ci.com/github/dimpurr/dimpurr.github.io
-
 此时就已经可以访问了。该换主题换主题，该加插件加插件，然后开始写文章吧！
 
-添加 RSS 插件： https://github.com/hexojs/hexo-generator-feed
+~~吐槽一个，安装了主题之后 yarn fetch 慢死了， Travis CI 又要每次重新 fecth ，还不如手动 hexo generate 呢 ……~~
+
+### 绑定域名
+
+在 Github 的 repo setting 里面设置自定义域名之后会在 master 生成一个 `CNAME` 文件，内容是你绑定的域名，显然这个是会被 Travis CI 覆盖掉的。
+
+所以在 `hexo` 分支的 `source` 目录下手动创建这个文件，内容是一行你要绑定的域名。
+
+然后到 DNS 配置中添加对应记录。如果是顶级域名的话：
+
+```
+@          A             192.30.252.153
+@          A             192.30.252.154
+www      CNAME           username.github.io.
+```
+
+如果是 HTTPS 的话， A 记录指向：
+
+```
+185.199.108.153
+185.199.109.153
+185.199.110.153
+185.199.111.153
+```
+
+不是顶级域名不需要 A 记录。
+
+### 添加 RSS 插件
+
+https://github.com/hexojs/hexo-generator-feed
 
 ```bash
 yarn add hexo-generator-feed --save
@@ -87,4 +114,3 @@ feed:
   autodiscovery: true
   template:
 ```
-
