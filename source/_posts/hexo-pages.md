@@ -2,6 +2,7 @@
 title: 部署 Hexo 博客到 Github Pages
 date: 2020-04-11 03:30:48
 tags:
+slug: hexo-init
 ---
 
 Hexo 官方的文档地址：https://hexo.io/docs/github-pages.html 这个文档有一堆问题，评论区有提到。
