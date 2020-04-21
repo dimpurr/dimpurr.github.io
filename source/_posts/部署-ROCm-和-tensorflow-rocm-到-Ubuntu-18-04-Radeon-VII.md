@@ -6,7 +6,7 @@ tags:
 
 ROCm 实在是太多坑了 …… 用剩下的最后一口气吐槽+写文记录。晒一张最终跑分：
 
-![200422-gpu-benchmark](200422-gpu-benchmark.png)
+{% asset_img "200422-gpu-benchmark.png" "200422-gpu-benchmark" %}
 
 ### 前因
 
@@ -376,11 +376,11 @@ total images/sec: 5.26
 
 这个是来搞笑的。不得不承认人类文明一直在进步。
 
-![200422-3900x-benchmark](200422-3900x-benchmark.jpg)
+{% asset_img "200422-3900x-benchmark.jpg" "200422-3900x-benchmark" %}
 
-![200422-3900x-monitor](200422-3900x-monitor.jpg)
+{% asset_img "200422-3900x-monitor.jpg" "200422-3900x-monitor" %}
 
-![200422-gpu-drinking-tea](200422-gpu-drinking-tea.jpg)
+{% asset_img "200422-gpu-drinking-tea.jpg" "200422-gpu-drinking-tea" %}
 
 真·12核有难GPU围观。
 
@@ -388,7 +388,7 @@ total images/sec: 5.26
 
 有一个槽一直忘记吐：
 
-![200422-elementary](200422-elementary.png)
+{% asset_img "200422-elementary.png" "200422-elementary" %}
 
 在 Linux 下 Radeon VII 无论在 **任何地方** 都会被认做 Vega 20 。这两张卡到底有什么关系啊 ……
 
