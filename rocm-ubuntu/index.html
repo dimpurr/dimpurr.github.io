@@ -22,8 +22,6 @@
 <p>接下来更新源并安装：</p>
 <a id="more"></a>
 
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">yarn global add hexo <span class="comment"># npm install -g hexo-cli</span></span><br><span class="line"><span class="built_in">cd</span> dimpurr.github.io</span><br><span class="line">git checkout -b hexo</span><br><span class="line">hexo init tmp</span><br><span class="line">mv ./tmp/* .</span><br><span class="line">rm -rf tmp <span class="comment"># rmdir tmp on windows</span></span><br></pre></td></tr></table></figure>
-
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install rocm-dkms</span><br></pre></td></tr></table></figure>
 
 <p>由于 Radeon 自己的源不能被 USTC / TUNA 等 Ubuntu deb 源加速，所以国内速度往往很慢（ 40MB 40kb/s ~1h），建议临时给 apt 增加全局代理：</p>
@@ -140,8 +138,11 @@
 <p>…… 唯一的缺点是基于 GTK 的 DE 在我 32‘ 2160p 的屏幕上没法 150% HiDPI 缩放，只能 2x 凑合用，好看但是牺牲了不少屏幕空间。而 KDE 虽然各种错乱，但也有一个聊胜于无的 1.5x ……</p>
 <p>嘛总之，设计有 Figma ，画画有 Krita ， DAW 还有 BitWig 和 REAPER ，非编可以 DaVinci Resolve …… 这些都能解决，别的还叫事吗！ QQ WeChat 哪个不能 Wine ，日常笔记 SimpleNote Evernote 哪个不是全平台，更别说听歌 Apple Music Youtube Music 到哪都能 last.fm Scrobbler ，根本懒得重启的我直接安装 Android Studio 和 WPS 开始准备写学校实验报告了。操作系统，于我如浮云哉～</p>
 <p>（这个人选择性忽视了还有 16 个小时就是移动开发课程作业 DDL 然而这个人还彻夜折腾 ROCm 至今项目一点没动的事实</p>
+<h4 id="小更新：关于-Radeon-VII-Vega-20-Vega-II-gfx906-和没有关系的-Radeon-Pro-Vega-20"><a href="#小更新：关于-Radeon-VII-Vega-20-Vega-II-gfx906-和没有关系的-Radeon-Pro-Vega-20" class="headerlink" title="小更新：关于 Radeon VII / Vega 20 / Vega II / gfx906 和没有关系的 Radeon Pro Vega 20"></a>小更新：关于 Radeon VII / Vega 20 / Vega II / gfx906 和没有关系的 Radeon Pro Vega 20</h4><p>貌似是 AMD 改名部（不是）的功劳。</p>
+<p>商品名 Radeon VII 本身就是 Vega II 的缩写，官方念法是 Seven ，所以也有时候写作 Radeon 7 ，算是双关。 Vega 20 是正式的开发代号， gfx906 是内部系列开发代号，和专业计算卡 Instinct MI50/MI60 共享，用于 <a href="https://llvm.org/docs/AMDGPUUsage.html" target="_blank" rel="noopener">编译参数</a> 。或者可以认为 VII 就是 MI50 下放到消费级的产品。</p>
+<p>专供 Mac Pro 的 VII 版本叫 Radeon Pro Vega II MPX Module 。另外还有 MacBook Pro 系列的 Radeon Pro Vega 20 ，虽然名字看起来差不多但是和 VII 一点关系都没有。</p>
 </div></article></div></main><footer><div class="paginator"><a href="/hexo-pages/" class="next">NEXT</a></div><div id="vcomments"></div><script>new Valine({
     el: '#vcomments',
-    appId: 'OeHwaq9WkgyXTmqkVEQYqPHp-gzGzoHsz',
-    appKey: 'ScE03xLJUjC9bg4r3nNbvU2u'
+    appId: 'rfGKuOWT2z4nxbjPVxbS4WXu-MdYXbMMI',
+    appKey: 'oz2sxWkXcOrVCakcq6W4U25y'
 })</script><div class="copyright"><p>© 2020 <a href="http://note.dim.moe">Dimpurr</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
