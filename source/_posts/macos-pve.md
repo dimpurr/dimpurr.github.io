@@ -5,6 +5,8 @@ tags:
 slug: macos-pve
 ---
 
+{% asset_img "mac-info.png" "Hackintosh macOS info with Radeon VII" %}
+
 促使我现在坐在这里生无可恋并心如死灰的撰写这篇文章的唯一原因，是我又手贱炸掉了 Proxmox 的 grub 引导。在如此接近胜利的黎明曙光，以至于我都用 GeekBench 在虚拟的 Hackintosh macOS 中都已经跑完了 CPU 多核和 GPU 直通的分数之后，就在我正愉快的准备修好 iService 以便享受 Apple Store 时，一次小小的崩溃和重启，配合遭天杀的 os-prober ，一切努力变成了屏幕上白花花的 GRUB > 。
 
 人不作死，就不会死。
@@ -40,6 +42,8 @@ nvme: Fatal error occurred
 在这个分区安装 debian 。然后把 debian 升级成 Proxmox 。然后，在里面创建一个占满全盘（当然，还有全部内存）的 Hackintosh 虚拟机。然后，再依次进行各种硬件的直通。
 
 那么下文的记录献给和我一样在错误的时间（指发布 ARM macOS 的 WWDC 深夜）用奇怪的组合（指单分区 debian 升级 Proxmox）进行迷惑操作（指在双 AMD 平台进行 OpenCore 硬件直通 Hackintosh）的你。
+
+<!-- more -->
 
 ### Debian & Proxmox
 
