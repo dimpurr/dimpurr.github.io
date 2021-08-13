@@ -56,15 +56,6 @@ echo 'deb [arch=amd64] http://repo.radeon.com/rocm/apt/debian/ xenial main' | su
 <!-- more -->
 
 ```bash
-yarn global add hexo # npm install -g hexo-cli
-cd dimpurr.github.io
-git checkout -b hexo
-hexo init tmp
-mv ./tmp/* .
-rm -rf tmp # rmdir tmp on windows
-```
-
-```bash
 sudo apt update
 sudo apt install rocm-dkms
 ```
@@ -400,3 +391,11 @@ total images/sec: 5.26
 嘛总之，设计有 Figma ，画画有 Krita ， DAW 还有 BitWig 和 REAPER ，非编可以 DaVinci Resolve …… 这些都能解决，别的还叫事吗！ QQ WeChat 哪个不能 Wine ，日常笔记 SimpleNote Evernote 哪个不是全平台，更别说听歌 Apple Music Youtube Music 到哪都能 last.fm Scrobbler ，根本懒得重启的我直接安装 Android Studio 和 WPS 开始准备写学校实验报告了。操作系统，于我如浮云哉～
 
 （这个人选择性忽视了还有 16 个小时就是移动开发课程作业 DDL 然而这个人还彻夜折腾 ROCm 至今项目一点没动的事实
+
+#### 小更新：关于 Radeon VII / Vega 20 / Vega II / gfx906 和没有关系的 Radeon Pro Vega 20
+
+貌似是 AMD 改名部（不是）的功劳。
+
+商品名 Radeon VII 本身就是 Vega II 的缩写，官方念法是 Seven ，所以也有时候写作 Radeon 7 ，算是双关。 Vega 20 是正式的开发代号， gfx906 是内部系列开发代号，和专业计算卡 Instinct MI50/MI60 共享，用于 [编译参数](https://llvm.org/docs/AMDGPUUsage.html) 。或者可以认为 VII 就是 MI50 下放到消费级的产品。
+
+专供 Mac Pro 的 VII 版本叫 Radeon Pro Vega II MPX Module 。另外还有 MacBook Pro 系列的 Radeon Pro Vega 20 ，虽然名字看起来差不多但是和 VII 一点关系都没有。
