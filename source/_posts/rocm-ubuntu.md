@@ -1,7 +1,9 @@
 ---
 title: 部署 ROCm 和 tensorflow-rocm 到 Ubuntu 18.04 (Radeon VII)
 date: 2020-04-22 04:58:53
-tags:
+tags: 
+- Ubuntu
+- Machine Learning
 slug: rocm-ubuntu
 ---
 

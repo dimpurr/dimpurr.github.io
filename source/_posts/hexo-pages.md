@@ -1,7 +1,8 @@
 ---
 title: 部署 Hexo 博客到 Github Pages
 date: 2020-04-11 03:30:48
-tags:
+tags: 
+- Blog
 slug: hexo-init
 ---
 

@@ -1,7 +1,8 @@
 ---
 title: 0202 年，在单分区 Proxmox 中安装 macOS Catalina (Hackintosh) 并直通硬件实现多系统
 date: 2020-06-23 10:14:01
-tags:
+tags: 
+- Virtual Machine
 slug: macos-pve
 ---
 
