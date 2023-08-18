@@ -2,6 +2,8 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install dmpfold</span><br></pre></td></tr></table></figure>
 
 <p>安装后直接运行 <code>dmpfold</code> 会提示 <code>&#39;dmpfold&#39; 不是内部或外部命令，也不是可运行的程序或批处理文件。</code>。最后发现的解决方案是通过 <code>python C:\Users\myccy\anaconda3\envs\pytorch\Scripts\dmpfold</code> 的方式运行。</p>
+<span id="more"></span>
+
 <p>尝试在 macOS (M1 Max) 上运行的时候，还碰到了一个 Bug :</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">OMP: Error #15: Initializing libiomp5.dylib, but found libomp.dylib already initialized.</span><br><span class="line">OMP: Hint This means that multiple copies of the OpenMP runtime have been linked into the program. That is dangerous, since it can degrade performance or cause incorrect results. The best thing to do is to ensure that only a single OpenMP runtime is linked into the process, e.g. by avoiding static linking of the OpenMP runtime in any library. As an unsafe, unsupported, undocumented workaround you can set the environment variable KMP_DUPLICATE_LIB_OK=TRUE to allow the program to continue to execute, but that may cause crashes or silently produce incorrect results. For more information, please see http://www.intel.com/software/products/support/.</span><br></pre></td></tr></table></figure>
 
