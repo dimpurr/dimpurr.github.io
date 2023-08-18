@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 使用 lerna 配合 npm workspace 进行大型全栈项目的 monorepo 包管理 · NOTED DIM'ENSIONS</title><meta name="description" content="使用 lerna 配合 npm workspace 进行大型全栈项目的 monorepo 包管理 - Dimpurr"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><script src="//unpkg.com/valine/dist/Valine.min.js"></script><link rel="search" type="application/opensearchdescription+xml" href="http://note.dim.moe/atom.xml" title="NOTED DIM'ENSIONS"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="wrap"><header><ul class="nav nav-list"><li class="nav-list-item"><b><a href="/" target="_self" class="nav-list-link">NOTED DIM'ENSIONS</a></b></li><li class="nav-list-item"><b><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></b></li><li class="nav-list-item"><b><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></b></li></ul><ul class="nav nav-list"><li class="nav-list-item"><a href="http://blog.dimpurr.com/" target="_blank" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="https://blog.dim.moe/" target="_blank" class="nav-list-link">BLOG.MOE</a></li><li class="nav-list-item"><a href="http://book.dimpurr.com/" target="_blank" class="nav-list-link">BOOK</a></li><li class="nav-list-item"><a href="http://book.dim.moe/" target="_blank" class="nav-list-link">BOOK.MOE</a></li><li class="nav-list-item"><a href="http://note.dimpurr.com/" target="_blank" class="nav-list-link">NOTE</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">使用 lerna 配合 npm workspace 进行大型全栈项目的 monorepo 包管理</h1><div class="post-info">Aug 18, 2023</div><div class="post-content"><p>npm workspaces 是 npm v7 中引入的一个新功能，允许开发者在一个单一的顶层项目中管理多个子项目或包。其主要特点包括：</p>
+<ul>
+<li>使得多个子项目能够共享一个 node_modules，从而提高安装效率。</li>
+<li>提供了本地依赖链接，使得在子项目之间引用变得容易。</li>
+</ul>
+<p>尽管 npm workspaces 提供了一些相同的功能，Lerna 仍然有其独特的价值和使用场景。下面是一些使用 Lerna 的原因：</p>
+<ul>
+<li>更复杂的发布流程: Lerna 是为管理 monorepo 并自动处理包版本和发布流程而构建的。通过 lerna publish，它可以智能地确定哪些包发生了变化，为它们版本化，并逐一发布。它还可以处理跨包的版本依赖。</li>
+<li>版本管理策略: Lerna 允许您选择固定或独立的版本管理策略。在固定模式下，所有包共享一个版本号。而在独立模式下，每个包可以有自己的版本号。</li>
+<li>跨包脚本执行: lerna run 和 lerna exec 允许您在所有子包或特定的子包上执行脚本和命令。这使得执行跨包任务变得容易。</li>
+</ul>
+<h3 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h3><ol>
+<li>初始化项目和配置 Lerna</li>
+</ol>
+<p>首先，使用 lerna init 命令初始化 Lerna。此命令将创建一个 lerna.json 文件，其中包含 Lerna 的配置。</p>
+<ol start="2">
+<li>启用 npm workspaces</li>
+</ol>
+<p>在项目的顶层 package.json 文件中，添加 workspaces 字段并配置子项目的路径，例如：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;my-project&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;workspaces&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;packages/*&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="创建和管理包"><a href="#创建和管理包" class="headerlink" title="创建和管理包"></a>创建和管理包</h3><p>创建新的 Lerna 包的流程是直接的。下面是如何使用 Lerna 创建新包的步骤：</p>
+<p>进入你的 packages 目录 (或者你在 lerna.json 中定义的其他目录)，然后手动创建一个新的目录为你的包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> packages</span><br><span class="line"><span class="built_in">mkdir</span> my-new-package</span><br><span class="line"><span class="built_in">cd</span> my-new-package</span><br><span class="line">npm init</span><br><span class="line">yarn add some-dependency</span><br><span class="line">lerna add some-dependency --scope=my-new-package</span><br></pre></td></tr></table></figure>
+
+<p>上述命令将 some-dependency 添加到 my-new-package。使用 –scope 参数确保只有特定的包接收该依赖。</p>
+<p>如果您的新包需要使用存储库中的其他 Lerna 包，您可以使用以下命令确保它们被正确链接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lerna bootstrap</span><br></pre></td></tr></table></figure>
+
+<p>这会确保所有的内部依赖都被正确地链接。</p>
+<h3 id="lerna-add-和-yarn-add-的区别"><a href="#lerna-add-和-yarn-add-的区别" class="headerlink" title="lerna add 和 yarn add 的区别"></a>lerna add 和 yarn add 的区别</h3><p>lerna add 和 yarn add 都是命令行工具中的命令，用于添加依赖到项目中，但它们的用途和上下文存在一些不同：</p>
+<p>作用范围：</p>
+<ul>
+<li>lerna add: 可以更灵活地为 monorepo 中的特定包或所有包添加依赖。例如，使用 –scope 选项，你可以将一个依赖添加到特定的 Lerna 管理的包中。</li>
+<li>yarn add: 只会将依赖添加到当前工作目录下的项目或包中。</li>
+</ul>
+<p>依赖链接：</p>
+<ul>
+<li>lerna add: 当你使用 lerna add 将一个存储库中的 Lerna 包添加为另一个 Lerna 包的依赖时，Lerna 会确保它们在本地正确地链接在一起，而不是从 npm registry 下载。</li>
+<li>yarn add: 默认情况下，它会从 npm registry 或设定的 registry 下载依赖。</li>
+</ul>
+<h3 id="其他常见工作流和命令"><a href="#其他常见工作流和命令" class="headerlink" title="其他常见工作流和命令"></a>其他常见工作流和命令</h3><ol>
+<li>使用 lerna add 和 npm install 为特定的包或所有包添加依赖。</li>
+<li>使用 lerna run 执行跨包脚本。</li>
+<li>使用 lerna publish 和 npm workspaces 的结合来发布包。</li>
+</ol>
+</div></article></div></main><footer><div class="paginator"><a href="/win-protein-pdb/" class="next">NEXT</a></div><div id="vcomments"></div><script>new Valine({
+    el: '#vcomments',
+    //- appId: 'rfGKuOWT2z4nxbjPVxbS4WXu-MdYXbMMI',
+    //- appKey: 'oz2sxWkXcOrVCakcq6W4U25y'
+    appId: 'PZ0goebhRPBQicUIJUSA6YAv-gzGzoHsz',
+    appKey: 'znA3Ts2FYVedjhPph9XtPocZ',
+    serverURLs: 'https://pz0goebh.lc-cn-n1-shared.com'
+})</script><div class="copyright"><p>© 2020 - 2023 <a href="http://note.dim.moe">Dimpurr</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

@@ -7,7 +7,7 @@
 
 <p>貌似这个 Bug 多发于 macOS Apple Silcon 中的 TensorFlow 和 PyTorch ，使用 <code>KMP_DUPLICATE_LIB_OK=TRUE dmpfold -i input.aln -n 0 -m 0 &gt; fold.pdb</code> 这种方式运行可以绕过。更复杂的解决方式是重新安装 <code>mkl</code> 依赖或者修改 import 顺序，我没有尝试。</p>
 <p>按上述方法运行后会报错 <code>[1]    26296 segmentation fault  KMP_DUPLICATE_LIB_OK=TRUE dmpfold -i *.aln -n 0 -m 0 &gt; fold.pdb</code> ，不清楚问题出在哪，遂放弃。</p>
-</div></article></div></main><footer><div class="paginator"><a href="/mocap-plan/" class="next">NEXT</a></div><div id="vcomments"></div><script>new Valine({
+</div></article></div></main><footer><div class="paginator"><a href="/lerna-npm-workspace/" class="prev">PREV</a><a href="/mocap-plan/" class="next">NEXT</a></div><div id="vcomments"></div><script>new Valine({
     el: '#vcomments',
     //- appId: 'rfGKuOWT2z4nxbjPVxbS4WXu-MdYXbMMI',
     //- appKey: 'oz2sxWkXcOrVCakcq6W4U25y'
