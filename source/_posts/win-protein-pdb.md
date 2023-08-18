@@ -1,7 +1,13 @@
 ---
 title: 在 Windows 下使用 PyTorch 运行 DMPFold2 进行蛋白质折叠预测
-tags:
+date: 2023-05-26 22:35:40
+tags: 
+- Machine Learning
+- Bioinfo
+- Media Art
+slug: win-protein-pdb
 ---
+
 
 使用 Anaconda 之前配置好的 PyTorch 环境，这里不再赘述，可以自行寻找相关教程。
 

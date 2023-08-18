@@ -141,3 +141,11 @@ python3 -m http.server
 ```
 
 然后访问 http://127.0.0.1:8000/ 就好了。
+
+### 日常使用的流程
+
+```
+hexo new draft PostTitle -s post-slug
+hexo publish slug
+hexo clean && hexo deploy
+```
