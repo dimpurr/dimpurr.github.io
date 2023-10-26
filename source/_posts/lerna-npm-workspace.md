@@ -20,6 +20,8 @@ npm workspaces 是 npm v7 中引入的一个新功能，允许开发者在一个
 
 1. 初始化项目和配置 Lerna
 
+<!-- more -->
+
 首先，使用 lerna init 命令初始化 Lerna。此命令将创建一个 lerna.json 文件，其中包含 Lerna 的配置。
 
 2. 启用 npm workspaces

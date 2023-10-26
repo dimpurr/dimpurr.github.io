@@ -17,6 +17,8 @@ pip install dmpfold
 
 安装后直接运行 `dmpfold` 会提示 `'dmpfold' 不是内部或外部命令，也不是可运行的程序或批处理文件。`。最后发现的解决方案是通过 `python C:\Users\myccy\anaconda3\envs\pytorch\Scripts\dmpfold` 的方式运行。
 
+<!-- more -->
+
 尝试在 macOS (M1 Max) 上运行的时候，还碰到了一个 Bug :
 
 ```

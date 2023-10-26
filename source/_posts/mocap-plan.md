@@ -18,6 +18,8 @@ tags:
 - iPhone 里安装 Protake 和 Move.ai 两个 App
 - 尽可能带充电宝
 
+<!-- more -->
+
 准备：
 - 手机
     - 4个三角架用来支持 iPhone
