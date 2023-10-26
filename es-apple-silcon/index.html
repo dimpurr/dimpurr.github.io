@@ -5,6 +5,8 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Error: elastic/tap/elasticsearch-full: Calling plist_options is disabled! Use service.require_root instead.</span><br><span class="line">Please report this issue to the elastic/tap tap (not Homebrew/brew or Homebrew/homebrew-core), or even better, submit a PR to fix it:</span><br><span class="line">  /opt/homebrew/Library/Taps/elastic/homebrew-tap/Formula/elasticsearch-full.rb:68</span><br></pre></td></tr></table></figure>
 
 <p>不用担心，根据 <a target="_blank" rel="noopener" href="https://github.com/elastic/homebrew-tap/issues/146">这个 issue</a> ，只需要找到提示的这个 .rb 文件的对应行，修改并替换：</p>
+<span id="more"></span>
+
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">plist_options :manual =&gt; <span class="string">&quot;elasticsearch&quot;</span></span><br><span class="line"><span class="comment"># 修改为↓</span></span><br><span class="line">@plist_manual = <span class="string">&quot;elasticsearch&quot;</span>` </span><br></pre></td></tr></table></figure>
 
 <p>记得重新运行 <code>brew install elastic/tap/elasticsearch-full</code> 。</p>
@@ -54,6 +56,72 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">plist_options :manual =&gt; <span class="string">&quot;kibana&quot;</span></span><br><span class="line"><span class="comment"># 修改为↓</span></span><br><span class="line">@plist_manual = <span class="string">&quot;kibana&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>神奇的是 kibana 好像不需要修改 Java 环境变量，直接 <code>brew services start kibana-full</code> 或者 <code>kibana</code> 就可以了。访问 <a target="_blank" rel="noopener" href="http://localhost:5601/">http://localhost:5601</a> 就能看到漂亮的界面了。</p>
+<h3 id="安装中文分词"><a href="#安装中文分词" class="headerlink" title="安装中文分词"></a>安装中文分词</h3><p>为了改善中文文本的搜索效果，您可能需要使用专门为中文设计的分词器，例如ik分词器（ik_max_word或ik_smart）。但要使用这些分词器，您需要先安装相应的Elasticsearch插件。</p>
+<p>在 <a target="_blank" rel="noopener" href="https://github.com/medcl/elasticsearch-analysis-ik">https://github.com/medcl/elasticsearch-analysis-ik</a> 寻找对应版本的插件，然后：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./bin/elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.3.0/elasticsearch-analysis-ik-6.3.0.zip</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.17.4/elasticsearch-analysis-ik-7.17.4.zip</span><br></pre></td></tr></table></figure>
+
+<p>重启 es 让插件生效。重设映射：</p>
+<p>在使用ik分词器之前，您需要重新设置body字段的映射。但请注意，更改现有字段的映射会导致该字段之前的数据丢失。您需要重新索引数据。</p>
+<p>创建一个新的索引，例如OldIndexName_new，并为body字段设置ik_max_word分词器。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">curl -X PUT <span class="string">&quot;localhost:9200/OldIndexName_new&quot;</span> -H <span class="string">&#x27;Content-Type: application/json&#x27;</span> -d<span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;mappings&quot;: &#123;</span></span><br><span class="line"><span class="string">    &quot;properties&quot;: &#123;</span></span><br><span class="line"><span class="string">      &quot;body&quot;: &#123;</span></span><br><span class="line"><span class="string">        &quot;type&quot;: &quot;text&quot;,</span></span><br><span class="line"><span class="string">        &quot;analyzer&quot;: &quot;ik_max_word&quot;</span></span><br><span class="line"><span class="string">      &#125;,</span></span><br><span class="line"><span class="string">      // ... 其他字段的映射（确保它们与旧索引相同或包含所需的更改）</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用Reindex API复制数据：</p>
+<p>从旧索引OldIndexName复制数据到新索引OldIndexName_new。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST <span class="string">&quot;localhost:9200/_reindex&quot;</span> -H <span class="string">&#x27;Content-Type: application/json&#x27;</span> -d<span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;source&quot;: &#123;</span></span><br><span class="line"><span class="string">    &quot;index&quot;: &quot;OldIndexName&quot;</span></span><br><span class="line"><span class="string">  &#125;,</span></span><br><span class="line"><span class="string">  &quot;dest&quot;: &#123;</span></span><br><span class="line"><span class="string">    &quot;index&quot;: &quot;OldIndexName_new&quot;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>验证新索引中的数据：</p>
+<p>确保新索引OldIndexName_new中的数据与旧索引OldIndexName中的数据一致。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X GET <span class="string">&quot;localhost:9200/OldIndexName_new/_search&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>删除旧索引并将新索引重命名：</p>
+<p>首先，删除旧的OldIndexName索引。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X DELETE <span class="string">&quot;localhost:9200/OldIndexName&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来，您可以将新索引的名称OldIndexName_new更改为OldIndexName，使其与旧索引的名称一致。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST <span class="string">&quot;localhost:9200/OldIndexName_new/_rename/OldIndexName&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行这些操作后，body字段将使用ik_max_word分词器，同时您的数据也会保存在新的索引中。再次强调，在执行这些操作之前，建议您先备份数据，并在非生产环境中进行测试。</p>
+<h3 id="配置安全"><a href="#配置安全" class="headerlink" title="配置安全"></a>配置安全</h3><p>最小安全： <a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.17/security-minimal-setup.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.17/security-minimal-setup.html</a></p>
+<p>先停止 es 和 kibana 。编辑 <code>$ES_PATH_CONF/elasticsearch.yml</code> 文件并添加以下内容：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">xpack.security.enabled:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>在我们的情况下，可以使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;\nxpack.security.enabled: true\n&quot;</span> &gt;&gt; /opt/homebrew/etc/elasticsearch/elasticsearch.yml</span><br></pre></td></tr></table></figure>
+
+<p>如果群集具有单个节点，请在 <code>$ES_PATH_CONF/elasticsearch.yml</code> 文件中添加该 discovery.type 设置并将值设置为 single-node 。此设置可确保您的节点不会无意中连接到可能正在您的网络上运行的其他集群。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">discovery.type:</span> <span class="string">single-node</span></span><br></pre></td></tr></table></figure>
+
+<p>要与群集通信，必须为内置用户配置用户名。除非启用匿名访问，否则将拒绝所有不包含用户名和密码的请求。通过运行 <code>elasticsearch-setup-passwords</code> 实用程序为内置用户设置密码。</p>
+<p>您可以针对群集中的任何节点运行该 elasticsearch-setup-passwords 实用程序。但是，您只应为整个群集运行一次此实用程序。</p>
+<p>使用该 auto 参数将随机生成的密码输出到控制台，您可以稍后在必要时更改这些密码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/elasticsearch-setup-passwords auto</span><br></pre></td></tr></table></figure>
+
+<p>如果要使用自己的密码，请使用 interactive 而不是 auto 参数运行命令。使用此模式将引导您完成所有内置用户的密码配置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/elasticsearch-setup-passwords interactive</span><br></pre></td></tr></table></figure>
+
+<p>启用 Elasticsearch 安全功能后，用户必须使用有效的用户名和密码登录 Kibana。您需要将 Kibana 配置为使用之前创建的内置 kibana_system 用户和密码。Kibana 执行一些需要使用 kibana_system 用户的后台任务。此帐户不适用于个人用户，并且无权从浏览器登录 Kibana。相反，您将以 elastic 超级用户身份登录 Kibana。</p>
+<p>将 elasticsearch.username 设置添加到 KIB_PATH_CONF&#x2F;kibana.yml 文件并将值设置为 kibana_system 用户： (该 KIB_PATH_CONF 变量是 Kibana 配置文件的路径。如果使用归档分发版（ zip 或 tar.gz ）安装 Kibana，则变量默认为 KIB_HOME&#x2F;config 。如果您使用的是软件包发行版（Debian 或 RPM），则变量默认为 &#x2F;etc&#x2F;kibana .)</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">elasticsearch.username:</span> <span class="string">&quot;kibana_system&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们的情况下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;\nelasticsearch.username: \&quot;kibana_system\&quot;\n&quot;</span> &gt;&gt; /opt/homebrew/etc/kibana/kibana.yml</span><br></pre></td></tr></table></figure>
+
+<p>在安装 Kibana 的目录中(我们应该是 <code>/opt/homebrew/Cellar/kibana-full/7.17.4/</code>)，运行以下命令以创建 Kibana 密钥库并添加安全设置。创建 Kibana 密钥库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(base) ➜  7.17.4 git:(stable) kibana-keystore create</span><br><span class="line">Created Kibana keystore <span class="keyword">in</span> /opt/homebrew/etc/kibana/kibana.keystore</span><br></pre></td></tr></table></figure>
+
+<p>emm, 看起来和运行目录也没啥关系。</p>
+<p>将 kibana_system 用户的密码添加到 Kibana 密钥库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/kibana-keystore add elasticsearch.password</span><br></pre></td></tr></table></figure>
+
+<p>重新启动 Kibana。以 elastic 用户身份登录 Kibana。使用此超级用户帐户可以管理空间、创建新用户和分配角色。如果您在本地运行 Kibana，请转到查看 <a target="_blank" rel="noopener" href="http://localhost:5601/">http://localhost:5601</a> 登录页面。</p>
+<p>运行后：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FATAL  Error: [config validation of [elasticsearch].password]: expected value of <span class="built_in">type</span> [string] but got [number]</span><br></pre></td></tr></table></figure>
+
+<p>杯具了，记得密码不能设置为纯数字。 7.x 重置密码的过程比较复杂，我使用了很暴力的直接删除 <code>rm -rf /opt/homebrew/etc/elasticsearch/elasticsearch.keystore</code> 然后重启 es 再运行设置密码，不知道不会不会有后遗症。</p>
+<p>在Logstash的Elasticsearch输出插件中，您可以指定用户名和密码，例如：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    hosts =&gt; [<span class="string">&quot;https://your-elasticsearch-host:port&quot;</span>]</span><br><span class="line">    index =&gt; <span class="string">&quot;your-index-name&quot;</span></span><br><span class="line">    user =&gt; <span class="string">&quot;your-username&quot;</span></span><br><span class="line">    password =&gt; <span class="string">&quot;your-password&quot;</span></span><br><span class="line">    ssl =&gt; <span class="literal">true</span></span><br><span class="line">    cacert =&gt; <span class="string">&quot;/path/to/ca.crt&quot;</span>  <span class="comment"># 如果需要的话</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="连接-PostgreSQL"><a href="#连接-PostgreSQL" class="headerlink" title="连接 PostgreSQL"></a>连接 PostgreSQL</h3><p>打开 <a target="_blank" rel="noopener" href="http://localhost:5601/app/fleet/integrations/postgresql-1.10.0/add-integration">http://localhost:5601/app/fleet/integrations/postgresql-1.10.0/add-integration</a> ，填写连接信息，然后点击 <code>Check Connection</code> ，如果成功，点击 <code>Save</code> 。</p>
 <hr>
 <p>参考： <a target="_blank" rel="noopener" href="https://gist.github.com/todgru/0ba097d63318313f12a52594217f8e2b">https://gist.github.com/todgru/0ba097d63318313f12a52594217f8e2b</a></p>
 </div></article></div></main><footer><div class="paginator"><a href="/lerna-npm-workspace/" class="next">NEXT</a></div><div id="vcomments"></div><script>new Valine({
